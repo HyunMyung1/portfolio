@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SANDY BEAN | Coffee & Sandwich</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <!-- Google Fonts: Noto Sans KR & Playfair Display -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+
+  <!-- 분리된 외부 CSS 파일 연결 -->
+  <link rel="stylesheet" href="style.css">
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              bg: '#FDFBF7',
+              card: '#F6EFE7',
+              border: '#E8DEC8',
+              brown: '#3B271A',
+              muted: '#7C6F65',
+              accent: '#B87B4C',
+              badge: '#67864A'
+            }
+          },
+          fontFamily: {
+            sans: ['"Noto Sans KR"', 'sans-serif'],
+            serif: ['"Playfair Display"', 'serif']
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="w-full flex justify-center">
+
+  <!-- 🎬 [인트로 영상 오버레이 섹션] -->
+  <div id="intro-overlay" class="fixed inset-0 z-[9999] bg-[#1A120B] flex items-center justify-center cursor-pointer">
+    <video 
+      id="intro-video" 
+      class="w-full h-full object-cover" 
+      playsinline 
+      preload="auto">
+      <source src="./인트로.mp4" type="video/mp4">
+      해당 브라우저는 비디오 재생을 지원하지 않습니다.
+    </video>
+
+    <div id="click-prompt" class="absolute inset-0 bg-black/40 flex flex-col items-center justify-center text-white text-center transition-opacity duration-300">
+      <div class="w-20 h-20 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center mb-5 border border-white/40 shadow-lg">
+        <i data-lucide="play" class="w-10 h-10 text-white fill-white translate-x-0.5"></i>
+      </div>
+      <h2 class="text-3xl font-bold tracking-widest uppercase font-serif mb-2">SANDY BEAN</h2>
+      <p class="text-base font-medium tracking-wide text-stone-200">화면을 클릭하면 영상이 시작됩니다</p>
+    </div>
+
+    <button id="skip-btn" class="absolute top-6 right-8 text-sm text-white/90 bg-black/50 hover:bg-black/80 backdrop-blur border border-white/30 px-5 py-2.5 rounded-full font-medium transition hidden z-10 flex items-center gap-2">
+      <span>건너뛰기 (SKIP)</span>
+      <i data-lucide="chevron-right" class="w-4 h-4"></i>
+    </button>
+  </div>
+
+  <!-- 메인 사이트 컨테이너 -->
+  <div class="main-wrap w-full border-x md:border-b border-[#E9E1D4] flex flex-col">
+
+    <!-- 1. HEADER -->
+    <header class="w-full flex items-center justify-between px-8 lg:px-14 py-6 border-b border-[#EFE8DC] bg-[#FAF6F0] sticky top-0 z-50">
+      <div class="flex items-center gap-3 cursor-pointer">
+        <div class="text-left">
+          <div class="flex items-center gap-1.5 justify-center mb-1">
+            <span class="h-[2.5px] w-6 bg-[#C99C6B]"></span>
+            <span class="h-[3.5px] w-8 bg-[#5F7A3E] rounded-full"></span>
+            <span class="h-[2.5px] w-6 bg-[#D27C5C]"></span>
+          </div>
+          <h1 class="text-2xl font-black tracking-widest text-[#3B271A] font-serif uppercase">SANDY BEAN</h1>
+          <p class="text-[11px] tracking-widest text-center text-[#8C7A6B] -mt-0.5 font-medium">• COFFEE & SANDWICH •</p>
+        </div>
+      </div>
+
+<nav id="main-nav" class="hidden md:flex items-center gap-10 text-base font-medium text-[#4A3B32]">
+        <a href="#brand" class="nav-item flex items-center gap-1.5 transition-colors duration-200 font-bold text-[#B87B4C]">
+          <i data-lucide="coffee" class="nav-coffee-icon w-5 h-5 text-[#B87B4C]"></i>
+          <span>Brand</span>
+        </a>
+        <a href="#menu" class="nav-item flex items-center gap-1.5 transition-colors duration-200 hover:text-[#B87B4C]">
+          <span>Menu</span>
+        </a>
+        <a href="#store" class="nav-item flex items-center gap-1.5 transition-colors duration-200 hover:text-[#B87B4C]">
+          <span>Store</span>
+        </a>
+        <a href="#contact" class="nav-item flex items-center gap-1.5 transition-colors duration-200 hover:text-[#B87B4C]">
+          <span>Contact</span>
+        </a>
+      </nav>
+
+      <div class="flex items-center gap-4">
+        <a href="#order" class="bg-[#B87B4C] hover:bg-[#A3693D] text-white text-sm px-6 py-2.5 rounded-full font-semibold transition shadow-sm">온라인 주문</a>
+        <button class="text-[#3B271A] p-1.5 focus:outline-none md:hidden" aria-label="메뉴 토글">
+          <i data-lucide="menu" class="w-7 h-7"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- 2. HERO SECTION -->
+    <section class="relative px-8 lg:px-14 py-20 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center overflow-hidden">
+      <div class="lg:col-span-5 space-y-7 z-10">
+        <div class="flex items-center gap-2 text-[#B87B4C] text-sm font-bold tracking-widest">
+          <span>❖</span>
+          <span>COFFEE & SANDWICH</span>
+        </div>
+        
+        <!-- 🌟 글씨 크기 확대 및 CSS hero-headline 클래스로 넓은 행간 적용 -->
+        <h2 class="hero-headline text-3xl sm:text-4xl lg:text-[44px] font-extrabold text-[#2C1D14]">
+          가볍게, 든든하게.<br>
+          매일 좋은 하루를 위한<br>
+          샌드위치와 커피
+        </h2>
+
+        <p class="text-base sm:text-lg text-[#6E5D53] leading-relaxed">
+          신선한 재료로 만든 샌드위치와<br>
+          향긋한 커피로 전하는 따뜻한 일상의 순간.
+        </p>
+        
+        <div class="flex items-center gap-4 pt-3">
+          <button class="bg-[#B87B4C] hover:bg-[#A3693D] text-white text-sm sm:text-base px-7 py-3 rounded-full font-semibold transition shadow-sm">메뉴 보러가기</button>
+          <button class="border border-[#B87B4C] text-[#B87B4C] hover:bg-[#FAF0E6] text-sm sm:text-base px-7 py-3 rounded-full font-semibold transition flex items-center gap-2">
+            <i data-lucide="map-pin" class="w-4 h-4"></i> 매장 찾기
+          </button>
+        </div>
+      </div>
+
+      <div class="lg:col-span-7 relative flex justify-center lg:justify-end">
+        <div class="relative w-full max-w-[560px] aspect-[4/3] rounded-t-full rounded-b-[44px] overflow-hidden shadow-md bg-stone-200">
+          <img src="https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=1000&q=80" alt="샌드위치와 커피" class="w-full h-full object-cover">
+        </div>
+        <div class="absolute -bottom-7 flex items-center gap-2.5">
+          <span class="w-3 h-3 rounded-full bg-[#4A3B32]"></span>
+          <span class="w-2.5 h-2.5 rounded-full bg-[#D5C9BE]"></span>
+          <span class="w-2.5 h-2.5 rounded-full bg-[#D5C9BE]"></span>
+        </div>
+      </div>
+    </section>
+
+<section id="menu" class="px-8 lg:px-14 py-20">
+      <div class="bg-[#F8F3EC] border border-[#E9E1D3] rounded-3xl p-8 lg:p-12 shadow-sm">
+        <div class="flex items-center justify-center gap-3 mb-12 text-center">
+          <span class="text-[#B87B4C] text-lg">❖</span>
+          <h3 class="text-2xl sm:text-3xl tracking-[0.2em] font-serif font-bold text-[#2C1D14] uppercase">MENU</h3>
+          <span class="text-[#B87B4C] text-lg">❖</span>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+          <!-- Sandwich -->
+          <div>
+            <div class="flex items-center gap-3 mb-5">
+              <span class="h-px flex-1 bg-[#E2D6C6]"></span>
+              <span class="text-sm font-bold tracking-widest text-[#7C6F65] uppercase">SANDWICH</span>
+              <span class="h-px flex-1 bg-[#E2D6C6]"></span>
+            </div>
+            <div class="grid grid-cols-3 gap-4">
+              <div class="bg-[#FCFAF7] border border-[#ECE2D5] rounded-xl p-4 flex flex-col justify-between text-center relative group hover:shadow-md transition">
+                <span class="absolute top-2.5 left-2.5 bg-[#557A46] text-white text-[10px] font-bold px-2 py-0.5 rounded">BEST</span>
+                <div class="w-full aspect-square mb-3 rounded-lg overflow-hidden bg-stone-100">
+                  <img src="https://images.unsplash.com/photo-1525351484163-7529414344d8?auto=format&fit=crop&w=400&q=80" alt="에그마요 샌드위치" class="w-full h-full object-cover">
+                </div>
+                <h4 class="text-sm font-bold text-[#2C1D14] mb-1">에그마요 샌드위치</h4>
+                <p class="text-xs text-[#8C7D73] leading-snug mb-2.5">부드러운 에그마요와 신선한 채소</p>
+                <span class="text-sm font-extrabold text-[#3B271A]">6,300원</span>
+              </div>
+              <div class="bg-[#FCFAF7] border border-[#ECE2D5] rounded-xl p-4 flex flex-col justify-between text-center relative group hover:shadow-md transition">
+                <span class="absolute top-2.5 left-2.5 bg-[#557A46] text-white text-[10px] font-bold px-2 py-0.5 rounded">BEST</span>
+                <div class="w-full aspect-square mb-3 rounded-lg overflow-hidden bg-stone-100">
+                  <img src="https://images.unsplash.com/photo-1553909489-cd47e0907980?auto=format&fit=crop&w=400&q=80" alt="햄치즈 샌드위치" class="w-full h-full object-cover">
+                </div>
+                <h4 class="text-sm font-bold text-[#2C1D14] mb-1">햄치즈 샌드위치</h4>
+                <p class="text-xs text-[#8C7D73] leading-snug mb-2.5">담백한 햄과 고소한 치즈의 조화</p>
+                <span class="text-sm font-extrabold text-[#3B271A]">6,800원</span>
+              </div>
+              <div class="bg-[#FCFAF7] border border-[#ECE2D5] rounded-xl p-4 flex flex-col justify-between text-center group hover:shadow-md transition">
+                <div class="w-full aspect-square mb-3 rounded-lg overflow-hidden bg-stone-100">
+                  <img src="https://images.unsplash.com/photo-1509722747041-616f39b57569?auto=format&fit=crop&w=400&q=80" alt="바질 치킨 샌드위치" class="w-full h-full object-cover">
+                </div>
+                <h4 class="text-sm font-bold text-[#2C1D14] mb-1">바질 치킨 샌드위치</h4>
+                <p class="text-xs text-[#8C7D73] leading-snug mb-2.5">바질 페스토와 닭가슴살의 담백함</p>
+                <span class="text-sm font-extrabold text-[#3B271A]">7,200원</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Coffee -->
+          <div>
+            <div class="flex items-center gap-3 mb-5">
+              <span class="h-px flex-1 bg-[#E2D6C6]"></span>
+              <span class="text-sm font-bold tracking-widest text-[#7C6F65] uppercase">COFFEE</span>
+              <span class="h-px flex-1 bg-[#E2D6C6]"></span>
+            </div>
+            <div class="grid grid-cols-3 gap-4">
+              <div class="bg-[#FCFAF7] border border-[#ECE2D5] rounded-xl p-4 flex flex-col justify-between text-center relative group hover:shadow-md transition">
+                <span class="absolute top-2.5 left-2.5 bg-[#557A46] text-white text-[10px] font-bold px-2 py-0.5 rounded">BEST</span>
+                <div class="w-full aspect-square mb-3 rounded-lg overflow-hidden bg-stone-100">
+                  <img src="https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&w=400&q=80" alt="아이스 라떼" class="w-full h-full object-cover">
+                </div>
+                <h4 class="text-sm font-bold text-[#2C1D14] mb-1">아이스 라떼</h4>
+                <p class="text-xs text-[#8C7D73] leading-snug mb-2.5">고소하고 부드러운 베스트 라떼</p>
+                <span class="text-sm font-extrabold text-[#3B271A]">4,800원</span>
+              </div>
+              <div class="bg-[#FCFAF7] border border-[#ECE2D5] rounded-xl p-4 flex flex-col justify-between text-center relative group hover:shadow-md transition">
+                <span class="absolute top-2.5 left-2.5 bg-[#557A46] text-white text-[10px] font-bold px-2 py-0.5 rounded">BEST</span>
+                <div class="w-full aspect-square mb-3 rounded-lg overflow-hidden bg-stone-100">
+                  <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=400&q=80" alt="아메리카노" class="w-full h-full object-cover">
+                </div>
+                <h4 class="text-sm font-bold text-[#2C1D14] mb-1">아메리카노</h4>
+                <p class="text-xs text-[#8C7D73] leading-snug mb-2.5">깔끔하고 깊은 풍미의 기본</p>
+                <span class="text-sm font-extrabold text-[#3B271A]">4,200원</span>
+              </div>
+              <div class="bg-[#FCFAF7] border border-[#ECE2D5] rounded-xl p-4 flex flex-col justify-between text-center group hover:shadow-md transition">
+                <div class="w-full aspect-square mb-3 rounded-lg overflow-hidden bg-stone-100">
+                  <img src="https://images.unsplash.com/photo-1577968897966-3d4325b36b61?auto=format&fit=crop&w=400&q=80" alt="오트 라떼" class="w-full h-full object-cover">
+                </div>
+                <h4 class="text-sm font-bold text-[#2C1D14] mb-1">오트 라떼</h4>
+                <p class="text-xs text-[#8C7D73] leading-snug mb-2.5">고소한 오트밀크의 부드러움</p>
+                <span class="text-sm font-extrabold text-[#3B271A]">5,300원</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. BRAND STORY & OUR FRIENDS -->
+    <section id="brand" class="px-8 lg:px-14 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
+      <div class="lg:col-span-7 bg-[#F8F3EC] border border-[#E9E1D3] rounded-3xl p-9 lg:p-10 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center gap-2 text-[#B87B4C] text-xs font-bold tracking-widest uppercase mb-4">
+            <span>❖</span>
+            <span>BRAND STORY</span>
+          </div>
+          <h3 class="text-2xl sm:text-3xl font-extrabold text-[#2C1D14] leading-snug mb-4">
+            일상에 작지만 좋은 순간을<br>
+            전하는 샌드위치 & 커피 브랜드
+          </h3>
+          <p class="text-sm sm:text-base text-[#7C6F65] leading-relaxed mb-8">
+            샌디빈은 "Simple, Fresh, Warm, Reliable, Light Meal"의<br>
+            가치를 담아 언제나 편안하고 믿을 수 있는 한끼와 커피를 제안합니다.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-5 gap-3 border-t border-[#EAE1D4] pt-7 text-center">
+          <div class="flex flex-col items-center">
+            <i data-lucide="feather" class="w-6 h-6 text-[#8C7A6B] mb-2"></i>
+            <span class="text-[11px] sm:text-xs font-bold tracking-wider text-[#6B5A4D]">간편하고</span>
+          </div>
+          <div class="flex flex-col items-center">
+            <i data-lucide="leaf" class="w-6 h-6 text-[#8C7A6B] mb-2"></i>
+            <span class="text-[11px] sm:text-xs font-bold tracking-wider text-[#6B5A4D]">신선하며</span>
+          </div>
+          <div class="flex flex-col items-center">
+            <i data-lucide="heart" class="w-6 h-6 text-[#8C7A6B] mb-2"></i>
+            <span class="text-[11px] sm:text-xs font-bold tracking-wider text-[#6B5A4D]">따뜻하고</span>
+          </div>
+          <div class="flex flex-col items-center">
+            <i data-lucide="shield-check" class="w-6 h-6 text-[#8C7A6B] mb-2"></i>
+            <span class="text-[11px] sm:text-xs font-bold tracking-wider text-[#6B5A4D]">믿을 수 있는</span>
+          </div>
+          <div class="flex flex-col items-center">
+            <i data-lucide="utensils" class="w-6 h-6 text-[#8C7A6B] mb-2"></i>
+            <span class="text-[11px] sm:text-xs font-bold tracking-wider text-[#6B5A4D]">가벼운 식사</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-5 bg-[#F8F3EC] border border-[#E9E1D3] rounded-3xl p-9 lg:p-10 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center gap-2 text-[#B87B4C] text-xs font-bold tracking-widest uppercase mb-4">
+            <span>❖</span>
+            <span>OUR FRIENDS</span>
+            <span>❖</span>
+          </div>
+          <h3 class="text-2xl sm:text-3xl font-serif font-bold text-[#2C1D14] mb-4">Sandy & Beandy</h3>
+          <p class="text-sm sm:text-base text-[#7C6F65] leading-relaxed mb-6">
+            샌디빈의 귀여운 친구들이<br>
+            당신의 하루를 더 즐겁고<br>
+            따뜻하게 만들어 줄 거예요!
+          </p>
+        </div>
+
+        <div class="flex items-end justify-between pt-3">
+          <button class="border border-[#B87B4C] text-[#B87B4C] hover:bg-[#FAF0E6] text-sm px-5 py-2.5 rounded-full font-semibold transition self-end">
+            친구들 소개 보기
+          </button>
+
+          <div class="flex items-end gap-3 pr-1">
+            <div class="character-bounce cursor-pointer w-24 h-24 flex items-center justify-center">
+              <img 
+                src="./샌디.png" 
+                alt="Sandy (샌디)" 
+                class="w-full h-full object-contain"
+                onerror="this.src='https://dummyimage.com/120x120/FBF2DD/3B271A&text=Sandy'">
+            </div>
+
+            <div class="character-bounce cursor-pointer w-20 h-24 flex items-center justify-center">
+              <img 
+                src="./빈디.png" 
+                alt="Beandy (빈디)" 
+                class="w-full h-full object-contain"
+                onerror="this.src='https://dummyimage.com/100x120/845437/FFFFFF&text=Beandy'">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. STORE EXPERIENCE -->
+    <section id="store" class="px-8 lg:px-14 py-10">
+      <div class="bg-[#F8F3EC] border border-[#E9E1D3] rounded-3xl p-9 lg:p-10">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <div class="lg:col-span-4 space-y-5">
+            <span class="text-[#B87B4C] text-xs font-bold tracking-widest uppercase block">STORE EXPERIENCE</span>
+            <h3 class="text-2xl sm:text-3xl font-bold text-[#2C1D14] leading-snug">
+              따뜻한 분위기의 샌디빈 매장에서<br>
+              여유로운 시간을 즐겨보세요.
+            </h3>
+            <button class="border border-[#B87B4C] text-[#B87B4C] hover:bg-[#FAF0E6] text-sm px-6 py-3 rounded-full font-semibold transition inline-block">
+              매장 찾기
+            </button>
+          </div>
+          <div class="lg:col-span-8 flex items-center gap-4 relative">
+            <div class="w-1/3 aspect-[4/3] rounded-2xl overflow-hidden shadow-sm">
+              <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=500&q=80" alt="매장 외관" class="w-full h-full object-cover">
+            </div>
+            <div class="w-1/3 aspect-[4/3] rounded-2xl overflow-hidden shadow-sm">
+              <img src="https://images.unsplash.com/photo-1559925393-8be0ec4767c8?auto=format&fit=crop&w=500&q=80" alt="매장 내부 좌석" class="w-full h-full object-cover">
+            </div>
+            <div class="w-1/3 aspect-[4/3] rounded-2xl overflow-hidden shadow-sm">
+              <img src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?auto=format&fit=crop&w=500&q=80" alt="카운터 & 키친" class="w-full h-full object-cover">
+            </div>
+            <button class="absolute -right-3 w-10 h-10 bg-white/95 border border-stone-200 rounded-full flex items-center justify-center text-stone-700 shadow-md hover:bg-white transition" aria-label="다음 매장 사진">
+              <i data-lucide="chevron-right" class="w-5 h-5"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. FOOTER -->
+    <footer id="contact" class="mt-10 border-t border-[#EFE8DC] px-8 lg:px-14 py-14 text-sm text-[#7C6F65]">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 pb-12">
+        
+        <div class="lg:col-span-1 space-y-3">
+          <div class="font-serif font-black text-lg tracking-widest text-[#3B271A]">SANDY BEAN</div>
+          <p class="text-xs sm:text-sm leading-relaxed text-[#8C7D73]">
+            샌디빈은 신선한 재료와 정성으로<br>
+            매일 좋은 한 끼와 커피를 만듭니다.
+          </p>
+        </div>
+
+        <div class="space-y-3">
+          <div class="font-bold text-[#3B271A] text-sm uppercase mb-2">INFORMATION</div>
+          <ul class="space-y-2 text-xs sm:text-sm">
+            <li><a href="#" class="hover:underline">이용약관</a></li>
+            <li><a href="#" class="hover:underline">개인정보처리방침</a></li>
+            <li><a href="#" class="hover:underline">위치기반 서비스 이용약관</a></li>
+            <li><a href="#" class="hover:underline">온라인 주문 이용약관</a></li>
+          </ul>
+        </div>
+
+        <div class="space-y-3">
+          <div class="font-bold text-[#3B271A] text-sm uppercase mb-2">CUSTOMER CENTER</div>
+          <div class="text-lg font-extrabold text-[#3B271A]">02-1234-5678</div>
+          <p class="text-xs sm:text-sm leading-relaxed text-[#8C7D73]">
+            평일 08:00 - 20:00<br>
+            주말 09:00 - 20:00
+          </p>
+          <div class="text-xs sm:text-sm text-[#8C7D73]">hello@sandybean.co.kr</div>
+        </div>
+
+<div class="space-y-3">
+  <div class="font-bold text-[#3B271A] text-sm uppercase mb-2">FOLLOW US</div>
+  <div class="flex items-center gap-2.5">
+    <!-- 1. 인스타그램 공식 심볼 -->
+    <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" title="Instagram" class="w-8 h-8 rounded-full bg-[#B87B4C] text-white flex items-center justify-center hover:opacity-85 transition">
+      <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+      </svg>
+    </a>
+
+    <!-- 2. 페이스북 공식 심볼 -->
+    <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" title="Facebook" class="w-8 h-8 rounded-full bg-[#B87B4C] text-white flex items-center justify-center hover:opacity-85 transition">
+      <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+      </svg>
+    </a>
+
+    <!-- 3. 카카오톡 공식 심볼 -->
+    <a href="https://kakao.com" target="_blank" rel="noopener noreferrer" title="KakaoTalk" class="w-8 h-8 rounded-full bg-[#B87B4C] text-white flex items-center justify-center hover:opacity-85 transition">
+      <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 3c-4.97 0-9 3.185-9 7.115 0 2.557 1.708 4.8 4.27 6.054l-1.09 4.024a.434.434 0 0 0 .548.528l4.757-3.148c.17.016.342.025.515.025 4.97 0 9-3.185 9-7.115S16.97 3 12 3z"/>
+      </svg>
+    </a>
+
+    <!-- 4. 유튜브 공식 심볼 -->
+    <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" title="YouTube" class="w-8 h-8 rounded-full bg-[#B87B4C] text-white flex items-center justify-center hover:opacity-85 transition">
+      <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+      </svg>
+    </a>
+  </div>
+</div>
+
+        <div class="space-y-3">
+          <div class="font-bold text-[#3B271A] text-sm uppercase mb-2">SANDY APP</div>
+          <p class="text-xs sm:text-sm text-[#8C7D73]">샌디빈 앱으로 더 편리하게 주문하고 리워드를 받아보세요!</p>
+          <div class="flex items-center gap-2.5 pt-1">
+            <button class="bg-black text-white text-xs px-3 py-2 rounded flex items-center gap-1.5">
+              <i data-lucide="apple" class="w-3.5 h-3.5"></i> App Store
+            </button>
+            <button class="bg-black text-white text-xs px-3 py-2 rounded flex items-center gap-1.5">
+              <i data-lucide="play" class="w-3.5 h-3.5"></i> Google Play
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="border-t border-[#EAE1D4] pt-7 text-center text-xs text-[#9A8B80]">
+        © 2024 SANDY BEAN COFFEE & SANDWICH. All rights reserved.
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    lucide.createIcons();
+
+    const overlay = document.getElementById('intro-overlay');
+    const video = document.getElementById('intro-video');
+    const prompt = document.getElementById('click-prompt');
+    const skipBtn = document.getElementById('skip-btn');
+    let isPlaying = false;
+
+    function finishIntro() {
+      overlay.classList.add('fade-out');
+      setTimeout(() => {
+        video.pause();
+      }, 800);
+    }
+
+    overlay.addEventListener('click', (e) => {
+      if (e.target.closest('#skip-btn')) return;
+
+      if (!isPlaying) {
+        isPlaying = true;
+        prompt.classList.add('opacity-0');
+        setTimeout(() => prompt.remove(), 300);
+        skipBtn.classList.remove('hidden');
+
+        video.play().catch(err => {
+          console.warn('무음 모드로 재생을 시도합니다:', err);
+          video.muted = true;
+          video.play();
+        });
+      }
+    });
+
+    video.addEventListener('ended', () => {
+      finishIntro();
+    });
+
+    skipBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      finishIntro();
+    });
+    // ☕ [네비게이션 인터랙션: 커피 아이콘 이동 & 부드러운 스크롤]
+    const navItems = document.querySelectorAll('#main-nav .nav-item');
+    const headerElement = document.querySelector('header');
+
+    navItems.forEach(item => {
+      item.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href');
+        if (!targetId || targetId === '#') return;
+
+        const targetSection = document.querySelector(targetId);
+        if (targetSection) {
+          e.preventDefault();
+
+          // 1. 기존 활성화 메뉴 스타일 초기화 & 현재 메뉴 활성화
+          navItems.forEach(nav => {
+            nav.classList.remove('font-bold', 'text-[#B87B4C]');
+            nav.classList.add('text-[#4A3B32]');
+          });
+          this.classList.add('font-bold', 'text-[#B87B4C]');
+          this.classList.remove('text-[#4A3B32]');
+
+          // 2. 커피 아이콘을 클릭한 메뉴 맨 앞으로 이동
+          let coffeeIcon = document.querySelector('.nav-coffee-icon');
+          if (coffeeIcon) {
+            this.prepend(coffeeIcon);
+            // Lucide 아이콘 리렌더링
+            lucide.createIcons();
+          }
+
+          // 3. 상단 헤더 높이를 감안한 부드러운 스크롤링
+          const headerOffset = headerElement ? headerElement.offsetHeight + 10 : 80;
+          const sectionPosition = targetSection.getBoundingClientRect().top + window.pageYOffset;
+          const offsetPosition = sectionPosition - headerOffset;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+</html>
